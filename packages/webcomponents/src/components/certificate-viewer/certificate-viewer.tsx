@@ -13,22 +13,24 @@ import {
   State,
   Watch,
   Host,
+  Build,
 } from '@stencil/core';
 
 import {
   X509Certificate,
 } from '../../crypto';
 import { getDNSNameLink, getIPAddressLink, getLEILink } from '../../utils/third_party_links';
-
-import { PublicKey } from './public_key';
-import { Signature } from './signature';
-import { Thumbprints } from './thumbprints';
-import { Extensions } from './extensions';
-import { Miscellaneous } from './miscellaneous';
-import { SubjectName } from './subject_name';
-import { IssuerName } from './issuer_name';
-import { BasicInformation } from './basic_information';
-import { l10n } from '../../utils';
+import {
+  BasicInformation,
+  SubjectName,
+  IssuerName,
+  PublicKey,
+  Signature,
+  Thumbprints,
+  Extensions,
+  Miscellaneous,
+} from '../certificate-details-parts';
+import { Typography } from '../typography';
 
 export type CertificateProp = string | X509Certificate;
 
@@ -38,9 +40,11 @@ export type CertificateProp = string | X509Certificate;
   shadow: true,
 })
 export class CertificateViewer {
-  certificateDecoded: X509Certificate;
+  private certificateDecoded: X509Certificate;
 
-  certificateDecodeError: Error;
+  private certificateDecodeError: Error;
+
+  private mobileMediaQuery: MediaQueryList;
 
   /**
    * The certificate value for decode and show details. Use PEM or DER.
@@ -95,14 +99,34 @@ export class CertificateViewer {
   @Prop({ reflect: true }) issuerDnLink?: string;
 
   /**
-   * Choose view type instead @media.
+   * Mobile media query string to control screen view change.
+   * <br />
+   * **NOTE**: Based on https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia.
+   * @example
+   *  (max-width: 900px)
    */
-  @Prop({ reflect: true }) view?: 'mobile';
+  @Prop({ reflect: false }) mobileMediaQueryString?: string = '(max-width: 900px)';
+
+  @State() mobileScreenView: boolean = false;
 
   @State() isDecodeInProcess: boolean = true;
 
+  private handleMediaQueryChange(event: MediaQueryListEvent) {
+    this.mobileScreenView = event.matches;
+  }
+
   componentWillLoad() {
     this.decodeCertificate(this.certificate);
+
+    if (Build.isBrowser) {
+      this.mobileMediaQuery = window.matchMedia(this.mobileMediaQueryString);
+      this.mobileMediaQuery.addEventListener('change', this.handleMediaQueryChange.bind(this));
+      this.mobileScreenView = this.mobileMediaQuery.matches;
+    }
+  }
+
+  disconnectedCallback() {
+    this.mobileMediaQuery.removeEventListener('change', this.handleMediaQueryChange.bind(this));
   }
 
   private async decodeCertificate(certificate: CertificateProp) {
@@ -150,16 +174,16 @@ export class CertificateViewer {
   }
 
   private getAuthKeyIdParentLink = (value: string) => this.authKeyIdParentLink
-      ?.replace('{{authKeyId}}', value);
+    ?.replace('{{authKeyId}}', value);
 
   private getAuthKeyIdSiblingsLink = (value: string) => this.authKeyIdSiblingsLink
-      ?.replace('{{authKeyId}}', value);
+    ?.replace('{{authKeyId}}', value);
 
   private getSubjectKeyIdChildrenLink = (value: string) => this.subjectKeyIdChildrenLink
-      ?.replace('{{subjectKeyId}}', value);
+    ?.replace('{{subjectKeyId}}', value);
 
   private getSubjectKeyIdSiblingsLink = (value: string) => this.subjectKeyIdSiblingsLink
-      ?.replace('{{subjectKeyId}}', value);
+    ?.replace('{{subjectKeyId}}', value);
 
   private getIssuerDnLink() {
     return this.issuerDnLink;
@@ -169,12 +193,9 @@ export class CertificateViewer {
   private renderErrorState() {
     return (
       <div class="status_wrapper">
-        <peculiar-typography
-          type="b1"
-          class="interaction_text"
-        >
-          {l10n.getString('certificateDecodeError')}
-        </peculiar-typography>
+        <Typography>
+          There was an error decoding this certificate.
+        </Typography>
       </div>
     );
   }
@@ -183,12 +204,9 @@ export class CertificateViewer {
   private renderEmptyState() {
     return (
       <div class="status_wrapper">
-        <peculiar-typography
-          type="b1"
-          class="interaction_text"
-        >
-          {l10n.getString('certificateNotAvailable')}
-        </peculiar-typography>
+        <Typography>
+          There is no certificate available.
+        </Typography>
       </div>
     );
   }
@@ -204,7 +222,7 @@ export class CertificateViewer {
 
     return (
       <Host
-        data-view={this.view}
+        data-mobile-screen-view={String(this.mobileScreenView)}
       >
         <table>
           <BasicInformation

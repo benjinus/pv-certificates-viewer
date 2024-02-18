@@ -10,11 +10,18 @@ import { AsnConvert } from '@peculiar/asn1-schema';
 import { ECParameters, id_ecPublicKey } from '@peculiar/asn1-ecc';
 import { id_rsaEncryption, RSAPublicKey } from '@peculiar/asn1-rsa';
 import { CertificationRequest } from '@peculiar/asn1-csr';
+import {
+  id_pkcs9_at_extensionRequest,
+  ExtensionRequest,
+} from '@peculiar/asn1-pkcs9';
 import { Convert } from 'pvtsutils';
+
+import { Download } from '../utils';
 
 import { AsnData } from './asn_data';
 import { Name, INameJSON } from './name';
 import { Attribute, TAttributeValue } from './attribute';
+import { Extension, TExtensionValue } from './extension';
 import {
   certificateRawToBuffer,
   hexFormat,
@@ -39,6 +46,8 @@ export class CSR extends AsnData<CertificationRequest> {
   public readonly version: number;
 
   public attributes: Attribute<TAttributeValue>[];
+
+  public extensions: Extension<TExtensionValue>[];
 
   public thumbprints: Record<string, string> = {};
 
@@ -100,12 +109,13 @@ export class CSR extends AsnData<CertificationRequest> {
   }
 
   public async getThumbprint(
-    algorithm: globalThis.AlgorithmIdentifier = 'SHA-1',
+    algorithm: string = 'SHA-1',
   ): Promise<void> {
     try {
       const thumbprint = await getCertificateThumbprint(algorithm, this.raw);
+
       if (thumbprint) {
-        this.thumbprints[algorithm['name'] || algorithm] = Convert.ToHex(thumbprint);
+        this.thumbprints[algorithm] = Convert.ToHex(thumbprint);
       }
     } catch (error) {
       console.error('Error thumbprint get:', error);
@@ -118,6 +128,15 @@ export class CSR extends AsnData<CertificationRequest> {
     if (certificationRequestInfo.attributes) {
       this.attributes = certificationRequestInfo.attributes
         .map((e) => new Attribute(AsnConvert.serialize(e)));
+
+      const extensionRequestAttribute = this.attributes.find(
+        (attribute) => attribute.asn.type === id_pkcs9_at_extensionRequest,
+      ) as Attribute<ExtensionRequest>;
+
+      if (extensionRequestAttribute) {
+        this.extensions = extensionRequestAttribute.value
+          .map((e) => new Extension(AsnConvert.serialize(e)));
+      }
     }
   }
 
@@ -131,5 +150,19 @@ export class CSR extends AsnData<CertificationRequest> {
 
   public exportAsPemFormatted() {
     return `-----BEGIN CERTIFICATE REQUEST-----\n${base64Format(this.exportAsBase64())}\n-----END CERTIFICATE REQUEST-----`;
+  }
+
+  public downloadAsPEM(name?: string) {
+    Download.csr.asPEM(
+      this.exportAsPemFormatted(),
+      name || this.commonName,
+    );
+  }
+
+  public downloadAsDER(name?: string) {
+    Download.csr.asDER(
+      this.exportAsHexFormatted(),
+      name || this.commonName,
+    );
   }
 }

@@ -3,6 +3,171 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v4.1.0...v4.2.0) (2023-10-25)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [4.1.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v4.0.2...v4.1.0) (2023-10-20)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+## [4.0.2](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v4.0.1...v4.0.2) (2023-10-03)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+## [4.0.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.10.1...v4.0.0) (2023-10-02)
+
+### Changed
+
+* **compiler:** use rollup for building ([bf94d26](https://github.com/PeculiarVentures/pv-certificates-viewer/pull/129/commits/bf94d262ee6d62c8676afae739d2ca09ba340c5f))
+
+### Breaking Changes
+
+* **compiler:** upgrade Stenciljs to v4  ([62bf94b](https://github.com/PeculiarVentures/pv-certificates-viewer/pull/129/commits/62bf94bb31023b19de191aecc0e5b5b86b6be621))
+* **theme:** use new design system and CSS variables ([0f8dc12](https://github.com/PeculiarVentures/pv-certificates-viewer/pull/129/commits/0f8dc12e8adcea2a7636ea3a3c31d7a948288d9f))
+
+
+
+
+
+## [3.10.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.10.0...v3.10.1) (2023-08-29)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.10.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.9.0...v3.10.0) (2023-04-17)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.9.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.8.0...v3.9.0) (2023-04-14)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.8.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.7.0...v3.8.0) (2023-03-27)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.7.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.6.0...v3.7.0) (2023-03-14)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.6.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.5.0...v3.6.0) (2022-12-01)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.5.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.4.0...v3.5.0) (2022-11-29)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.4.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.3.1...v3.4.0) (2022-11-28)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+## [3.3.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.3.0...v3.3.1) (2022-11-28)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.3.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.2.1...v3.3.0) (2022-10-11)
+
+
+### Features
+
+* **webcomponents-react:** add PeculiarCrlViewer component ([72947ac](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/72947ac5de7a9adb6ec4d94b5839f00eb46f4779))
+
+
+
+
+
+## [3.2.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.2.0...v3.2.1) (2022-09-29)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.2.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.1.0...v3.2.0) (2022-09-27)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+# [3.1.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.5...v3.1.0) (2022-09-25)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
+## [3.0.5](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.4...v3.0.5) (2022-09-14)
+
+
+### Bug Fixes
+
+* **webcomponents-react:** fix https://github.com/PeculiarVentures/pv-certificates-viewer/issues/120 ([d40b1f9](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/d40b1f939705e7b920390d29b3bca6bcb73fdb67))
+
+
+
+
+
+## [3.0.4](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.3...v3.0.4) (2022-08-04)
+
+**Note:** Version bump only for package @peculiar/certificates-viewer-react
+
+
+
+
+
 ## [3.0.3](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.2...v3.0.3) (2022-07-29)
 
 **Note:** Version bump only for package @peculiar/certificates-viewer-react

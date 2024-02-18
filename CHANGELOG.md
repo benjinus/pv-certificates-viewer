@@ -3,6 +3,214 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v4.1.0...v4.2.0) (2023-10-25)
+
+
+### Features
+
+* **logs:** add "e83ed0da3ef5063532e75728bc896bc903d3cbd1116beceb69e1777d6d06bd6e" ([20911d0](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/20911d09b27a0130cd898fe661e79674d8954e16))
+* **oids:** add "2.23.140.*" description ([7067dcd](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/7067dcdddad48e04dbb673250f0ab1bd29a3c00c))
+* **webcomponents:** add "2.23.140.3.1" (cabforganization Identifier) extension support ([b0e131e](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/b0e131ecf97e9fabf8bd7850e5581ec34ae08d99))
+
+
+
+
+
+# [4.1.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v4.0.2...v4.1.0) (2023-10-20)
+
+
+### Features
+
+* **webcomponents:** add "1.3.6.1.4.1.11129.2.1.17" (android key description) extension support ([0c83228](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/0c83228b424458515a9b415cd4d9c160e6c3937d))
+
+
+
+
+
+## [4.0.2](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v4.0.1...v4.0.2) (2023-10-03)
+
+**Note:** Version bump only for package peculiar-certificates-viewer-monorepo
+
+
+
+
+
+## [4.0.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.10.1...v4.0.0) (2023-10-02)
+
+### Changed
+
+* **webcomponents-react:** use rollup for building ([bf94d26](https://github.com/PeculiarVentures/pv-certificates-viewer/pull/129/commits/bf94d262ee6d62c8676afae739d2ca09ba340c5f))
+
+### Breaking Changes
+
+* **webcomponents:** upgrade Stenciljs to v4  ([62bf94b](https://github.com/PeculiarVentures/pv-certificates-viewer/pull/129/commits/62bf94bb31023b19de191aecc0e5b5b86b6be621))
+* **webcomponents:** use new design system and CSS variables ([0f8dc12](https://github.com/PeculiarVentures/pv-certificates-viewer/pull/129/commits/0f8dc12e8adcea2a7636ea3a3c31d7a948288d9f))
+
+
+
+
+
+## [3.10.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.10.0...v3.10.1) (2023-08-29)
+
+**Note:** Version bump only for package peculiar-certificates-viewer-monorepo
+
+
+
+
+
+# [3.10.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.9.0...v3.10.0) (2023-04-17)
+
+
+### Features
+
+* **oids:** add "2.23.140.1.5.2.2" description ([7fac38c](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/7fac38cbfa870af649b781f2c7dcc0f792288e0d))
+
+
+
+
+
+# [3.9.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.8.0...v3.9.0) (2023-04-14)
+
+
+### Features
+
+* **oids:** add "1.3.6.1.5.5.7.3.46" description ([d46bba7](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/d46bba7f5ef1c240c9945fefea25e37ba543df7a))
+
+
+
+
+
+# [3.8.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.7.0...v3.8.0) (2023-03-27)
+
+
+### Features
+
+* **webcomponents:** add QCStatements extension statement parsing ([b7a5e33](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/b7a5e3367cd98cb591fdb9c65a31026ce62fbbba))
+
+
+
+
+
+# [3.7.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.6.0...v3.7.0) (2023-03-14)
+
+
+### Features
+
+* **oids:** add PQC related oids ([ac81c36](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/ac81c3696c70dc91652f3964ac2f5547c83649a4))
+* **webcomponents:** add support parsing PQC to X509Certificate ([9e3acbb](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/9e3acbb2fce1308675e093cf6d1707462bd6e796))
+* **webcomponents:** add support render PQC to Signature and PublicKey parts ([4ab4d9a](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/4ab4d9aeb9071a997f14734074a66e593f796346))
+
+
+
+
+
+# [3.6.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.5.0...v3.6.0) (2022-12-01)
+
+
+### Features
+
+* **oids:** add Matter related oids ([86eaee9](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/86eaee9eb1542c2ed84ae05420e9d2a30e894fe4))
+
+
+
+
+
+# [3.5.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.4.0...v3.5.0) (2022-11-29)
+
+
+### Features
+
+* **webcomponents:** add support to show CertificateIssuer extension in "crlEntryExtensions" view ([339a8de](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/339a8de582010cb26cb15e636971911dcb35c2a3))
+
+
+
+
+
+# [3.4.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.3.1...v3.4.0) (2022-11-28)
+
+
+### Features
+
+* **webcomponents:** add support to show "crlEntryExtensions" data ([ecb0569](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/ecb0569c735fd0f0a8d5b024f6ff51cd746fb378))
+
+
+
+
+
+## [3.3.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.3.0...v3.3.1) (2022-11-28)
+
+
+### Bug Fixes
+
+* **webcomponents:** fix multiple certificates base64 parsing ([7513757](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/7513757effdd641df7010c660f2c8791ce2b1837))
+
+
+
+
+
+# [3.3.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.2.1...v3.3.0) (2022-10-11)
+
+
+### Features
+
+* **webcomponents-react:** add PeculiarCrlViewer component ([72947ac](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/72947ac5de7a9adb6ec4d94b5839f00eb46f4779))
+* **webcomponents:** add basic CRL viewer component support ([a1a20ce](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/a1a20cef7ef1e2c3ea9d560b007ca98a3925ba46))
+* **webcomponents:** add more fields to IssuingDistributionPointExtension view ([95b579c](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/95b579c1dd8a693f49195d8e53463ba92ececd19))
+
+
+
+
+
+## [3.2.1](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.2.0...v3.2.1) (2022-09-29)
+
+**Note:** Version bump only for package peculiar-certificates-viewer-monorepo
+
+
+
+
+
+# [3.2.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.1.0...v3.2.0) (2022-09-27)
+
+
+### Features
+
+* **docs:** add logic to work with "cert" and "certurl" query variables ([e513b49](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/e513b49d007c0dcd3d913e2688f67ae79f0959e4))
+
+
+
+
+
+# [3.1.0](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.5...v3.1.0) (2022-09-25)
+
+
+### Features
+
+* **oids:** add "2.16.840.1.114569.1.1.3" description ([bf55a06](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/bf55a064e42f684d696cea6f48ebe52a7ac7342f))
+* **webcomponents:** add support loading certificate by URL to "peculiar-certificate-decoder" ([c494691](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/c494691f9226ea9b51f41c5077ff9842c6d63979))
+
+
+
+
+
+## [3.0.5](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.4...v3.0.5) (2022-09-14)
+
+
+### Bug Fixes
+
+* **webcomponents-react:** fix https://github.com/PeculiarVentures/pv-certificates-viewer/issues/120 ([d40b1f9](https://github.com/PeculiarVentures/pv-certificates-viewer/commit/d40b1f939705e7b920390d29b3bca6bcb73fdb67))
+
+
+
+
+
+## [3.0.4](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.3...v3.0.4) (2022-08-04)
+
+**Note:** Version bump only for package peculiar-certificates-viewer-monorepo
+
+
+
+
+
 ## [3.0.3](https://github.com/PeculiarVentures/pv-certificates-viewer/compare/v3.0.2...v3.0.3) (2022-07-29)
 
 **Note:** Version bump only for package peculiar-certificates-viewer-monorepo

@@ -1,13 +1,13 @@
 {
-  "version": "3.0.3",
+  "version": "4.2.0",
   "packages": [
     "packages/*"
   ],
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "command": {
     "publish": {
       "conventionalCommits": true
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

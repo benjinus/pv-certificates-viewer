@@ -7,19 +7,28 @@
  */
 
 import {
-  Component, Host, h, Prop, State, Watch,
+  Component,
+  Host,
+  h,
+  Prop,
+  State,
+  Watch,
+  Build,
 } from '@stencil/core';
 
 import { CSR } from '../../crypto';
 import { getDNSNameLink, getIPAddressLink, getLEILink } from '../../utils/third_party_links';
-import { SubjectName } from '../certificate-viewer/subject_name';
-import { PublicKey } from '../certificate-viewer/public_key';
-import { Signature } from '../certificate-viewer/signature';
-import { Thumbprints } from '../certificate-viewer/thumbprints';
-import { Attributes } from '../certificate-viewer/attributes';
-import { Extensions } from '../certificate-viewer/extensions';
-import { Miscellaneous } from '../certificate-viewer/miscellaneous';
-import { BasicInformation } from '../certificate-viewer/basic_information';
+import {
+  BasicInformation,
+  SubjectName,
+  Signature,
+  Thumbprints,
+  Extensions,
+  Miscellaneous,
+  PublicKey,
+  Attributes,
+} from '../certificate-details-parts';
+import { Typography } from '../typography';
 
 export type CsrProp = string | CSR;
 
@@ -29,9 +38,11 @@ export type CsrProp = string | CSR;
   shadow: true,
 })
 export class CsrViewer {
-  certificateDecoded: CSR;
+  private certificateDecoded: CSR;
 
-  certificateDecodeError: Error;
+  private certificateDecodeError: Error;
+
+  private mobileMediaQuery: MediaQueryList;
 
   /**
    * The certificate value for decode and show details. Use PEM or DER.
@@ -62,14 +73,34 @@ export class CsrViewer {
   @Prop({ reflect: true }) subjectKeyIdSiblingsLink?: string;
 
   /**
-   * Choose view type instead @media.
+   * Mobile media query string to control screen view change.
+   * <br />
+   * **NOTE**: Based on https://developer.mozilla.org/en-US/docs/Web/API/Window/matchMedia.
+   * @example
+   *  (max-width: 900px)
    */
-  @Prop({ reflect: true }) view?: 'mobile';
+  @Prop({ reflect: false }) mobileMediaQueryString?: string = '(max-width: 900px)';
+
+  @State() mobileScreenView: boolean = false;
 
   @State() isDecodeInProcess: boolean = true;
 
+  private handleMediaQueryChange(event: MediaQueryListEvent) {
+    this.mobileScreenView = event.matches;
+  }
+
   componentWillLoad() {
     this.decodeCertificate(this.certificate);
+
+    if (Build.isBrowser) {
+      this.mobileMediaQuery = window.matchMedia(this.mobileMediaQueryString);
+      this.mobileMediaQuery.addEventListener('change', this.handleMediaQueryChange.bind(this));
+      this.mobileScreenView = this.mobileMediaQuery.matches;
+    }
+  }
+
+  disconnectedCallback() {
+    this.mobileMediaQuery.removeEventListener('change', this.handleMediaQueryChange.bind(this));
   }
 
   private async decodeCertificate(certificate: CsrProp) {
@@ -122,26 +153,25 @@ export class CsrViewer {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private getAuthKeyIdParentLink = (value: string) => value;
 
+  // eslint-disable-next-line class-methods-use-this
   private getAuthKeyIdSiblingsLink = (value: string) => value;
 
   private getSubjectKeyIdChildrenLink = (value: string) => this.subjectKeyIdChildrenLink
-      ?.replace('{{subjectKeyId}}', value);
+    ?.replace('{{subjectKeyId}}', value);
 
   private getSubjectKeyIdSiblingsLink = (value: string) => this.subjectKeyIdSiblingsLink
-      ?.replace('{{subjectKeyId}}', value);
+    ?.replace('{{subjectKeyId}}', value);
 
   // eslint-disable-next-line class-methods-use-this
   private renderErrorState() {
     return (
       <div class="status_wrapper">
-        <peculiar-typography
-          type="b1"
-          class="interaction_text"
-        >
+        <Typography>
           There was an error decoding this certificate request.
-        </peculiar-typography>
+        </Typography>
       </div>
     );
   }
@@ -150,23 +180,11 @@ export class CsrViewer {
   private renderEmptyState() {
     return (
       <div class="status_wrapper">
-        <peculiar-typography
-          type="b1"
-          class="interaction_text"
-        >
+        <Typography>
           There is no certificate request available.
-        </peculiar-typography>
+        </Typography>
       </div>
     );
-  }
-
-  private getExtensionRequestAttribute() {
-    if (!this.certificateDecoded) {
-      return undefined;
-    }
-
-    return this.certificateDecoded.attributes
-      .find((attribute) => attribute.asn.type === '1.2.840.113549.1.9.14');
   }
 
   render() {
@@ -178,11 +196,9 @@ export class CsrViewer {
       return this.renderEmptyState();
     }
 
-    const extensionRequestAttribute = this.getExtensionRequestAttribute();
-
     return (
       <Host
-        data-view={this.view}
+        data-mobile-screen-view={String(this.mobileScreenView)}
       >
         <table>
           <BasicInformation
@@ -217,7 +233,7 @@ export class CsrViewer {
           />
 
           <Extensions
-            extensions={extensionRequestAttribute?.value as any}
+            extensions={this.certificateDecoded.extensions}
             title="Extension Request"
             getLEILink={getLEILink}
             getDNSNameLink={getDNSNameLink}

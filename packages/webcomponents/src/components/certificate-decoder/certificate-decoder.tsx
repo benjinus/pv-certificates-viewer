@@ -7,11 +7,24 @@
  */
 
 import {
-  Component, Host, h, State, Prop,
+  Component,
+  Host,
+  h,
+  State,
+  Prop,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
 
-import { validator, history, readAsBinaryString } from '../../utils';
-import { X509Certificate, X509AttributeCertificate, CSR } from '../../crypto';
+import { validator, readAsBinaryString } from '../../utils';
+import {
+  X509Certificate,
+  X509AttributeCertificate,
+  CSR,
+  CRL,
+} from '../../crypto';
+import { Button } from '../button';
+import { Typography } from '../typography';
 
 @Component({
   tag: 'peculiar-certificate-decoder',
@@ -24,22 +37,38 @@ export class CertificateDecoder {
   /**
    * The example certificate value for decode and show details. Use PEM or DER.
    */
-  @Prop() certificateExample?: string;
+  @Prop() certificateExamples?: {
+    title: string;
+    value: string;
+  }[];
 
-  @State() certificateDecoded: X509Certificate | X509AttributeCertificate | CSR;
+  /**
+   * The default certificate value for decode and show details. Use PEM or DER.
+   */
+  @Prop() defaultCertificate?: string;
+
+  @State() certificateDecoded: X509Certificate | X509AttributeCertificate | CSR | CRL;
+
+  /**
+   * Emitted when the certificate has been successfully parsed.
+   */
+  @Event() successParse!: EventEmitter<string>;
+
+  /**
+   * Emitted when the certificate has been removed.
+   */
+  @Event() clearCertificate!: EventEmitter<void>;
 
   componentDidLoad() {
-    const parsedHash = history.parseHash(window.location.search);
-
-    if (parsedHash.cert) {
+    if (this.defaultCertificate) {
       /**
        * Prevent Stencil warning about re-render
        */
-      setTimeout(() => this.decode(parsedHash.cert), 100);
+      setTimeout(() => this.decode(this.defaultCertificate), 100);
     }
   }
 
-  private onClickDecode = () => {
+  private handleClickDecode = () => {
     const { value } = this.inputPaste;
 
     if (value) {
@@ -47,16 +76,12 @@ export class CertificateDecoder {
     }
   };
 
-  private onClickExample = () => {
-    this.decode(this.certificateExample);
-  };
-
-  private onClickClear = () => {
+  private handleClickClear = () => {
     this.clearValue();
   };
 
-  private onChangeInputFile = async (e: any) => {
-    const element = e.target;
+  private handleChangeInputFile = async (event: any) => {
+    const element = event.target;
 
     if (element.files) {
       const file = await readAsBinaryString(element.files[0]);
@@ -69,11 +94,19 @@ export class CertificateDecoder {
     }
   };
 
-  private onDropFile = async (e: any) => {
-    e.stopPropagation();
-    e.preventDefault();
+  private handleChangeExample = (event: any) => {
+    if (event.target.value) {
+      this.decode(event.target.value);
+    } else {
+      this.clearValue();
+    }
+  };
 
-    const element = e.dataTransfer;
+  private handleDropFile = async (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const element = event.dataTransfer;
 
     if (element.files) {
       const file = await readAsBinaryString(element.files[0]);
@@ -87,19 +120,13 @@ export class CertificateDecoder {
   clearValue() {
     this.inputPaste.value = '';
     this.certificateDecoded = null;
-
-    history.replace({ search: '' });
+    this.clearCertificate.emit();
   }
 
-  setValue(value: X509Certificate | X509AttributeCertificate | CSR) {
+  setValue(value: X509Certificate | X509AttributeCertificate | CSR | CRL) {
     this.certificateDecoded = value;
     this.inputPaste.value = value.exportAsPemFormatted();
-
-    history.replace({
-      search: history.queryStringify({
-        cert: value.exportAsBase64(),
-      }),
-    });
+    this.successParse.emit(value.exportAsBase64());
   }
 
   decode(certificate: string) {
@@ -107,13 +134,14 @@ export class CertificateDecoder {
     const isX509Pem = validator.isX509Pem(certificate);
     const isPkcs10Pem = validator.isPkcs10Pem(certificate);
     const isX509AttributePem = validator.isX509AttributePem(certificate);
-    let decoded: X509Certificate | X509AttributeCertificate | CSR;
+    const isX509CRLPem = validator.isX509CRLPem(certificate);
+    let decoded: X509Certificate | X509AttributeCertificate | CSR | CRL;
     let decodeError: Error;
 
-    if (isPem && !(isX509Pem || isX509AttributePem || isPkcs10Pem)) {
+    if (isPem && !(isX509Pem || isX509AttributePem || isPkcs10Pem || isX509CRLPem)) {
       this.clearValue();
 
-      alert('Unsupported file type. Please try to use Certificate/AttributeCertificate/CertificateRequest.');
+      alert('Unsupported file type. Please try to use Certificate/AttributeCertificate/CertificateRequest/CRL.');
 
       return;
     }
@@ -129,6 +157,10 @@ export class CertificateDecoder {
 
       if (isPkcs10Pem) {
         decoded = new CSR(certificate);
+      }
+
+      if (isX509CRLPem) {
+        decoded = new CRL(certificate);
       }
     } catch (error) {
       decodeError = error;
@@ -159,10 +191,18 @@ export class CertificateDecoder {
     }
 
     if (!decoded) {
+      try {
+        decoded = new CRL(certificate);
+      } catch (error) {
+        decodeError = error;
+      }
+    }
+
+    if (!decoded) {
       this.clearValue();
 
       console.log(decodeError);
-      alert('Error decoding file. Please try to use Certificate/AttributeCertificate/CertificateRequest.');
+      alert('Error decoding file. Please try to use Certificate/AttributeCertificate/CertificateRequest/CRL.');
     } else {
       this.setValue(decoded);
     }
@@ -173,42 +213,55 @@ export class CertificateDecoder {
       <Host>
         <textarea
           placeholder="Certificate DER or PEM"
-          class="textarea"
+          class="textarea t-b2 c-black"
           ref={(el) => { this.inputPaste = el; }}
-          onDrop={this.onDropFile}
+          onDrop={this.handleDropFile}
         />
         <div class="controls">
-          <peculiar-button
-            fill="fill"
-            class="button"
-            onClick={this.onClickDecode}
-          >
-            Decode
-          </peculiar-button>
-          <peculiar-button class="button">
-            Choose file
+          <div class="control_row">
+            <Typography
+              variant="b3"
+              color="secondary-tint-2"
+            >
+              Drag or load file:
+            </Typography>
             <input
               type="file"
-              class="input_file"
-              accept="application/pkix-cert,application/x-x509-ca-cert,application/x-x509-user-cert,application/pkcs10,.csr,.req"
-              onChange={this.onChangeInputFile}
+              accept="application/pkix-cert,application/x-x509-ca-cert,application/x-x509-user-cert,application/pkcs10,application/pkix-crl,.csr,.req,.crl"
+              onChange={this.handleChangeInputFile}
               value=""
             />
-          </peculiar-button>
-          <peculiar-button
-            class="button"
-            onClick={this.onClickClear}
-          >
-            Clear
-          </peculiar-button>
-          {this.certificateExample && (
-            <peculiar-button
-              class="button"
-              onClick={this.onClickExample}
-            >
-              Example
-            </peculiar-button>
+          </div>
+          {this.certificateExamples?.length && (
+            <div class="control_row">
+              <Typography
+                variant="b3"
+                color="secondary-tint-2"
+              >
+                Load examples:
+              </Typography>
+              <select onChange={this.handleChangeExample}>
+                <option value="">None</option>
+                {this.certificateExamples.map((example) => (
+                  <option value={example.value}>
+                    {example.title}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
+          <div class="control_row">
+            <Button
+              onClick={this.handleClickDecode}
+            >
+              Decode
+            </Button>
+            <Button
+              onClick={this.handleClickClear}
+            >
+              Clear
+            </Button>
+          </div>
         </div>
         {this.certificateDecoded instanceof X509Certificate && (
           <peculiar-certificate-viewer
@@ -226,6 +279,13 @@ export class CertificateDecoder {
         )}
         {this.certificateDecoded instanceof CSR && (
           <peculiar-csr-viewer
+            certificate={this.certificateDecoded}
+            class="viewer"
+            download
+          />
+        )}
+        {this.certificateDecoded instanceof CRL && (
+          <peculiar-crl-viewer
             certificate={this.certificateDecoded}
             class="viewer"
             download
