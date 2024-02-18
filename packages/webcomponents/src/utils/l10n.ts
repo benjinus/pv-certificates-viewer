@@ -7,6 +7,7 @@
  */
 
 import en from '../locales/en.json';
+import zh from '../locales/zh.json';
 
 type ReplacerType = {
   pattern: string;
@@ -15,6 +16,7 @@ type ReplacerType = {
 
 const MESSAGES_ALL = {
   en,
+  zh,
 };
 
 export type SupportedMessagesType = keyof typeof MESSAGES_ALL;
@@ -34,7 +36,7 @@ export class Localization {
 
   getLocale = () => this.locale;
 
-  getString(id: keyof typeof en, replacer?: ReplacerType): string | string[] {
+  getString(id: keyof typeof en | string, replacer?: ReplacerType): string | string[] {
     const value = MESSAGES_ALL[this.locale][id];
 
     if (!value) {

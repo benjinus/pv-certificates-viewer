@@ -32,5 +32,7 @@
   "certificateDetails": "Certificate Details",
   "holder": "Holder",
   "digestInfo": "Digest Info",
-  "type": "Type"
+  "type": "Type",
+  "certificateDecodeError": "There was an error decoding this certificate.",
+  "certificateNotAvailable": "There is no certificate available."
 }

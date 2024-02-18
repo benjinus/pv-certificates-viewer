@@ -26,7 +26,7 @@ export const SubjectName: FunctionalComponent<ISubjectNameProps> = (props) => {
     />,
     name.map((n) => (
       <RowValue
-        name={n.name || n.type}
+        name={l10n.getString(n.type) || n.name}
         value={n.value}
       />
     )),

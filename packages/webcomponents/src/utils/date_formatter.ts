@@ -8,11 +8,13 @@
 
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/zh';
+import { l10n } from './l10n';
 
 dayjs.extend(relativeTime);
 
 export const dateShort = (date: string | number | Date) => (
-  new Date(date).toUTCString()
+  new Date(date).toLocaleString()
 );
 
 export const dateDiff = (
@@ -23,6 +25,7 @@ export const dateDiff = (
     return '';
   }
 
+  dayjs.locale(l10n.getLocale());
   const start = dayjs(dateStart);
   const end = dayjs(dateEnd);
 

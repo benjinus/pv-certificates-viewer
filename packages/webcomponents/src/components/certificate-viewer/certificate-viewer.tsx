@@ -28,6 +28,7 @@ import { Miscellaneous } from './miscellaneous';
 import { SubjectName } from './subject_name';
 import { IssuerName } from './issuer_name';
 import { BasicInformation } from './basic_information';
+import { l10n } from '../../utils';
 
 export type CertificateProp = string | X509Certificate;
 
@@ -172,7 +173,7 @@ export class CertificateViewer {
           type="b1"
           class="interaction_text"
         >
-          There was an error decoding this certificate.
+          {l10n.getString('certificateDecodeError')}
         </peculiar-typography>
       </div>
     );
@@ -186,7 +187,7 @@ export class CertificateViewer {
           type="b1"
           class="interaction_text"
         >
-          There is no certificate available.
+          {l10n.getString('certificateNotAvailable')}
         </peculiar-typography>
       </div>
     );
